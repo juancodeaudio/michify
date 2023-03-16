@@ -1,18 +1,16 @@
 const API_URL_RANDOM = [
     'https://api.thecatapi.com/v1/images/search',
-    '?limit=4',
-    '&api_key=live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
+    '?limit=4'
 ].join('');
 const API_URL_FAVOURITES = [
     'https://api.thecatapi.com/v1/favourites',
-    '?limit=8',
-    '&api_key=live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
+    '?limit=8'
 ].join('');
 const API_URL_FAVOURITES_DELETE = (id) => [
     'https://api.thecatapi.com/v1/favourites',
-    `/${id}`,
-    '?api_key=live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
+    `/${id}`
 ].join('');
+const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload';
 
 const spanError = document.getElementById('error');
 const img1 = document.getElementById('img1');
@@ -23,6 +21,12 @@ const btn1 = document.getElementById('btn1');
 const btn2 = document.getElementById('btn2');
 const btn3 = document.getElementById('btn3');
 const btn4 = document.getElementById('btn4');
+
+const prev = document.getElementById('preview');
+const prevContainer = document.getElementById('previewContainer');
+const prevBtn = document.getElementById('previewBtn');
+const bgLoader = document.getElementById('bgLoader');
+
 
 
 
@@ -50,7 +54,12 @@ async function loadRandomMichis() {
 }
 
 async function loadFavouriteMichis() {
-    const res = await fetch(API_URL_FAVOURITES);
+    const res = await fetch(API_URL_FAVOURITES, {
+        method: 'GET',
+        headers: {
+            'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
+        }
+    });
     const data = await res.json();
 
     console.log('Favourites');
@@ -84,6 +93,7 @@ async function saveFavouriteMichi(id) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
         },
         body: JSON.stringify({
             image_id: id
@@ -104,7 +114,10 @@ async function saveFavouriteMichi(id) {
 
 async function deleteFavouriteMichi(id) {
     const res = await fetch(API_URL_FAVOURITES_DELETE(id), {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X'
+        }
     });
     const data = await res.json();
 
@@ -115,6 +128,61 @@ async function deleteFavouriteMichi(id) {
         loadFavouriteMichis();
     }
 }
+
+async function uploadMichiPhoto() {
+    bgLoader.style.display = "block";
+    const form = document.getElementById('uploadingForm');
+    const formData = new FormData(form);
+
+    console.log(formData.get('file'));
+
+    const res = await fetch(API_URL_UPLOAD, {
+        method: 'POST',
+        headers: {
+            'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X' 
+        },
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (res.status !== 201) {
+        spanError.innerHTML = `Hubo un error al subir michi: ${res.status} ${data.message}`
+    }
+    else {
+        console.log("Foto de michi cargada :)");
+        console.log({ data });
+        console.log(data.url);
+        saveFavouriteMichi(data.id)
+        emptyForm();
+    }
+    
+}
+
+function emptyForm() {
+    const file = document.getElementById("file");
+    file.value = '';
+    console.log('file deleted');
+    prevContainer.style.display = "none";
+    bgLoader.style.display = "none";
+
+}
+
+const previewImage = () => {
+    const file = document.getElementById("file").files;
+    const imageInfo = document.getElementById("imageInfo");
+    console.log(file);
+    if (file.length > 0) {
+      const fileReader = new FileReader();
+  
+      fileReader.onload = function(e) {
+        prev.setAttribute("src", e.target.result);
+        imageInfo.innerHTML = file[0].name;
+        prevContainer.style.display = "block";
+      };
+      fileReader.readAsDataURL(file[0]);
+    }
+  }
 
 loadRandomMichis();
 loadFavouriteMichis();

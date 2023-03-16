@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'>
+    <script src="https://kit.fontawesome.com/1ea794493d.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/styles.css">
     <title>Michis App</title>
 </head>
@@ -17,7 +18,6 @@
         <img src="./assets/cat-black-face-svgrepo-com.svg" alt="">
     </header>
     
-
     <section class="main-random_michis" id="randomMichis">
         
         <h2>Explore Michis</h2>
@@ -42,6 +42,28 @@
         </div>
         <button onclick="loadRandomMichis()" type="button" class="random-button" id="random-cat-button">REFRESH <span>⟳</span></button>
     </section>
+
+    <section id="uploadingMichi" class="upload-section">
+        <h2>Share your Michi</h2>
+
+        <form id="uploadingForm">
+            <label for="file" id="upload-label">
+                <span>Upload your own Michi! </span><i class="fa-solid fa-cloud-arrow-up"></i>
+                <input id="file" type="file" name="file" onchange="previewImage()">
+                <div id="previewContainer" class="preview-container">
+                    <img id="preview" />
+                    <button type="button" id="previewBtn" class="preview-delete-button fa-2xs" onclick="emptyForm()"><i class="fa-solid fa-square-xmark"></i></button>
+                    <div id="imageInfo" class="image-info">Gatito.png</div>
+                    <div id="bgLoader" class="background-loader">
+                        <div class="loader"></div>
+                    </div>
+                    
+                </div>
+            </label>
+            <button class="share-button" type="button" onclick="uploadMichiPhoto()">SHARE MICHI</button>
+        </form>
+    </section>
+
     <section class="main-favourite-michis">
         <h2>Favourite Michis ❤</h2>
         <span id="error"></span>
@@ -49,6 +71,7 @@
             
         </div>
     </section>
+
     <footer>
         <div class="legend">
             <p>Made with ❤ by <a href="https://github.com/juancodeaudio">@juancodeaudio</a></p>
