@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'>
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Michis App</title>
+</head>
+<body>
+    <header>
+        <h1>Michify</h1>
+        <img src="./assets/cat-black-face-svgrepo-com.svg" alt="">
+    </header>
+    
+
+    <section class="main-random_michis" id="randomMichis">
+        
+        <h2>Explore Michis</h2>
+        
+        <div class="michi-cards-container">
+            <article class="michi-card">
+                <img id="img1" width= "250" alt="Foto gatito aleatorio">
+                <button id="btn1">SAVE ❤</button>
+            </article>
+            <article class="michi-card">
+                <img id="img2" width= "250" alt="Foto gatito aleatorio">
+                <button id="btn2">SAVE ❤</button>
+            </article>
+            <article class="michi-card">
+                <img id="img3" width= "250" alt="Foto gatito aleatorio">
+                <button id="btn3">SAVE ❤</button>
+            </article>
+            <article class="michi-card">
+                <img id="img4" width= "250" alt="Foto gatito aleatorio">
+                <button id="btn4">SAVE ❤</button>
+            </article>
+        </div>
+        <button onclick="loadRandomMichis()" type="button" class="random-button" id="random-cat-button">REFRESH <span>⟳</span></button>
+    </section>
+    <section class="main-favourite-michis">
+        <h2>Favourite Michis ❤</h2>
+        <span id="error"></span>
+        <div class="michi-cards-container" id="favouriteMichis">
+            
+        </div>
+    </section>
+    <footer>
+        <div class="legend">
+            <p>Made with ❤ by <a href="https://github.com/juancodeaudio">@juancodeaudio</a></p>
+        </div>
+        <div class="footer_social-media">
+            <a href="https://twitter.com/juancodeaudio" class="icon twitter">
+                <div class="tooltip">Twitter</div>
+                <span><i class="fab fa-twitter"></i></span>
+            </a>
+            <a href="https://instagram.com/juancodeaudio?igshid=YmMyMTA2M2Y=" class="icon instagram">
+                <div class="tooltip">Instagram</div>
+                <span><i class="fab fa-instagram"></i></span>
+            </a>
+            <a href="https://github.com/juancodeaudio" class="icon github">
+                <div class="tooltip">Github</div>
+                <span><i class="fab fa-github"></i></span>
+            </a>
+            <a href="https://www.linkedin.com/in/juancodeaudio/" class="icon linkedin">
+                <div class="tooltip">LinkedIn</div>
+                <span><i class="fab fa-linkedin"></i></span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="./main.js"></script>
+</body>
+</html>
