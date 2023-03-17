@@ -33,12 +33,12 @@ const prev = document.getElementById('preview');
 const prevContainer = document.getElementById('previewContainer');
 const prevBtn = document.getElementById('previewBtn');
 const bgLoader = document.getElementById('bgLoader');
+const uploadStatus = document.getElementById('uploadStatus');
 
 
 async function loadRandomMichis() {
     const res = await fetch(API_URL_RANDOM);
     const data = await res.json();
-
     console.log('Random');
     console.log(data);
 
@@ -49,7 +49,6 @@ async function loadRandomMichis() {
         img2.src = data[1].url;
         img3.src = data[2].url;
         img4.src = data[3].url;
-
 
         btn1.onclick = () => saveFavouriteMichi(data[0].id);
         btn2.onclick = () => saveFavouriteMichi(data[1].id);
@@ -66,7 +65,6 @@ async function loadFavouriteMichis() {
         }
     });
     const data = await res.json();
-
     console.log('Favourites');
     console.log(data);
     
@@ -108,9 +106,8 @@ async function saveFavouriteMichi(id) {
     //     })
     // });
     // const data = await res.json();
-
     console.log('SAVE');
-    // console.log(res);
+    console.log(data, status);
 
     if(status !== 200) {
         spanError.innerHTML = "Hubo un error: " + status + data.message;
@@ -138,31 +135,40 @@ async function deleteFavouriteMichi(id) {
 }
 
 async function uploadMichiPhoto() {
-    bgLoader.style.display = "block";
+    
     const form = document.getElementById('uploadingForm');
+    const file = document.getElementById("file").files;
     const formData = new FormData(form);
 
     console.log(formData.get('file'));
 
-    const res = await fetch(API_URL_UPLOAD, {
-        method: 'POST',
-        headers: {
-            'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X' 
-        },
-        body: formData
-    });
-
-    const data = await res.json();
-
-    if (res.status !== 201) {
-        spanError.innerHTML = `Hubo un error al subir michi: ${res.status} ${data.message}`
+    if (file.length > 0) {
+        bgLoader.style.display = "block";
     }
-    else {
+    try {
+        const res = await fetch(API_URL_UPLOAD, {
+            method: 'POST',
+            headers: {
+                'X-API-KEY': 'live_GhxtDyAli6Mufch55wS50zsuTr0rGpXNHzBcX6mGDHJdeQhFnErkMhjXcPoa2d5X' 
+            },
+            body: formData
+        });
+        const data = await res.json();
         console.log("Foto de michi cargada :)");
         console.log({ data });
         console.log(data.url);
-        saveFavouriteMichi(data.id)
+        saveFavouriteMichi(data.id);
+        uploadStatus.style.display = "block";
+    } catch (err) {
+        console.log('No funcionó', err);
+        uploadStatus.style.display = "block";
+        uploadStatus.style.backgroundColor = "#D35D6E";
+        uploadStatus.innerHTML = "";
+        uploadStatus.innerHTML = "Error uploading";
+    } finally {
+        window.setTimeout(() => uploadStatus.style.display = "none", 2000);
         emptyForm();
+        console.log('Done');
     }
     
 }
